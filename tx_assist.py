@@ -2,7 +2,11 @@ import os
 from time import sleep, strftime, localtime
 from random import choice
 from re import match
-from colorama import Fore as f, Style as s
+try:
+    from colorama import Fore as f, Style as s
+except ImportError:
+    print("\nThis script requires colorama module. Install it using the command \"pip install colorama\" and try again.\n\nExiting...\n")
+    exit(1)
 
 
 ## ===========================================================================
