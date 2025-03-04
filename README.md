@@ -1,1 +1,2 @@
-# settings
+# TermX
+> Termux Scripts
