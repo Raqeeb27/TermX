@@ -71,10 +71,10 @@ def main():
     long_counts = [7,1,33,33,34,70,3,10,10,10,10,10,3,3,3,10]
     short_counts = [7,1,10,10,10,10,1,3,3,3,3,3,1,1,1,3]
     count = long_counts
-    
+
     if len(sys.argv) > 1 and sys.argv[1] == "l":
         pass
-    elif len(sys.argv) > 1 and sys.argv[1] == "s": 
+    elif len(sys.argv) > 1 and sys.argv[1] == "s":
         count = short_counts
     elif len(sys.argv) > 1 and sys.argv[1] == "i":
         single_zikr()

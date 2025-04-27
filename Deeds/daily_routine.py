@@ -117,14 +117,14 @@ def input_progress(file_name, date=datetime.now().strftime("%d-%m-%Y")):
         return
 
     activity = list(activities.keys())[int(choice) - 1]
-    
+
     # If it's Memorization or Revision, ask for a string input; otherwise use predefined value
     if activity in ["Memorization", "Revision"]:
         value = get_input(f"Enter the amount for '{activity.replace('_', ' ')}': ")
         update_activity(file_name, date, activity, value)
     else:
         update_activity(file_name, date, activity)
-    
+
     print(f"\n\n<----- Logged \"{activity.replace('_', ' ')}\" ----->")
 
 
@@ -133,7 +133,7 @@ def input_progress(file_name, date=datetime.now().strftime("%d-%m-%Y")):
 def display_progress(file_name, date=False):
     if date:
         today = get_input("Enter date (dd-mm-yyyy): ")
-    else:    
+    else:
         today = datetime.now().strftime("%d-%m-%Y")
     try:
         with open(file_name, 'r', newline='') as file:
@@ -147,32 +147,32 @@ def display_progress(file_name, date=False):
 
                     print("|" + "".center(60,"-") + "|")
                     print("|" + "Fajar".center(18) + "|" + f"{row[headers.index('Fajr_2_Sunnath')]}".center(20) + "|" + f"{row[headers.index('Fajr_2_Faraz')]}".center(20) + "|")
-                    
+
                     print("|" + "".center(60,"-") + "|")
                     print("|" + "Zohar".center(18) + "|" + f"{row[headers.index('Zohar_4_Sunnath')]}".center(10) + "|" + f"{row[headers.index('Zohar_4_Faraz')]}".center(10) + "|" + 
                           f"{row[headers.index('Zohar_2_Sunnath')]}".center(9) + "|" + f"{row[headers.index('Zohar_2_Nafil')]}".center(9) + "|")
-                    
+
                     print("|" + "".center(60,"-") + "|")
                     print("|" + "Asar".center(18) + "|" + f"{row[headers.index('Asar_4_Sunnath')]}".center(20) + "|" + f"{row[headers.index('Asar_4_Faraz')]}".center(20) + "|")
-                    
+
                     print("|" + "".center(60,"-") + "|")
                     print("|" + "Maghrib".center(18) + "|" + f"{row[headers.index('Maghrib_3_Faraz')]}".center(13) + "|" + f"{row[headers.index('Maghrib_2_Sunnath')]}".center(13) + "|" + f"{row[headers.index('Maghrib_2_Nafil')]}".center(13) + "|")
-                    
+
                     print("|" + "".center(60,"-") + "|")
                     print("|" + "Isha".center(18) + "|" + f"{row[headers.index('Isha_4_Faraz')]}".center(13) + "|" + f"{row[headers.index('Isha_2_Sunnath')]}".center(13) + "|" + f"{row[headers.index('Isha_3_Witr')]}".center(13) + "|")
-                    
+
                     print("|" + "".center(60,"-") + "|")
                     print("| " + "Tahajjud".center(10) + "|" + f"{row[headers.index('Tahajjud')]}".center(8) + "|" + f"Ishraq".center(10) + "|" + f"{row[headers.index('Ishraq')]}".center(8) + "|" + f"Chasht".center(10) + "|" + f"{row[headers.index('Chasht')]}".center(8) + "|")
-                    
+
                     print("|" + "".center(60,"-") + "|")
                     print("|" + "Memorization".center(20) + "|" + f"{row[headers.index('Memorization')]}".center(11) + "|" + "Revision".center(16) + "|" + f"{row[headers.index('Revision')]}".center(10) + "|")
-                    
+
                     print("|" + "".center(60,"-") + "|")
                     print("|" + "Surah Rahman".center(18) + "|" + f"{row[headers.index('Surah_Rahman')]}".center(11) + "|" + "Surah Waqiah".center(18) + "|" + f"{row[headers.index('Surah_Waqiah')]}".center(10) + "|")
-                    
+
                     print("|" + "".center(60,"-") + "|")
                     print("|" + f"Surah Yaseen".center(30) + "|" + f"{row[headers.index('Surah_Yaseen')]}".center(29) + "|")
-                    
+
                     print("|" + "".center(60,"-") + "|")
                     print("|" + "Surah Sajdah".center(18) + "|" + f"{row[headers.index('Surah_Sajdah')]}".center(11) + "|" + f"Surah Mulk".center(18) + "|" + f"{row[headers.index('Surah_Mulk')]}".center(10) + "|")
                     print("|" + "".center(60,"-") + "|")

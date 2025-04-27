@@ -33,7 +33,7 @@ def display_contacts(filename, operation):
         reader = csv.DictReader(csvfile)
         for row in reader:
             contacts.append((row['Name'], row['Phone']))
-    
+
     if len(contacts) == 0:
         print("\n*** No Data ***")
         return
@@ -45,7 +45,7 @@ def display_contacts(filename, operation):
         for i, (name, phone) in enumerate(contacts, 1):
             print(f"{i}. {name}, {phone}")
         return
-    
+
     else: # elif operation == "retrieve":
         print("\n-- Contacts List --")
         for i, (name, phone) in enumerate(contacts, 1):
