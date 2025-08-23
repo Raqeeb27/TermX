@@ -2,6 +2,7 @@ import csv
 from datetime import datetime
 import os
 
+
 # Define all the activities you want to track and their default values
 activities = {
     "Tahajjud": 2, "Isha_3_Witr": 3,
@@ -31,7 +32,6 @@ def get_input(text):
         exit(1)
 
 
-
 # Initialize the CSV file with headers if it doesn't exist
 def initialize_csv(file_name):
     if not os.path.exists(file_name):
@@ -40,10 +40,8 @@ def initialize_csv(file_name):
             writer.writerow(['Date'] + list(activities.keys()))
 
 
-
-# Check if a row for today's date exists, else initialize a new row for today
-def check_or_initialize_today(file_name):
-    today = datetime.now().strftime("%d-%m-%Y")
+# Check or initialize the date
+def check_or_initialize_date(file_name, date):
     rows = []
     file_exists = os.path.exists(file_name)
 
@@ -53,16 +51,16 @@ def check_or_initialize_today(file_name):
             reader = csv.reader(file)
             rows = list(reader)
 
-        # Check if today's date exists
+        # Check if the given date already exists
         for row in rows:
-            if row[0] == today:
-                return rows  # Today's row already exists
+            if row[0] == date:
+                return rows  # Date already exists
 
-    # If today's date doesn't exist, create a new row initialized to 0
-    new_row = [today] + [0] * len(activities)
+    # If the date doesn't exist, create a new row initialized to 0
+    new_row = [date] + [0] * len(activities)
     rows.append(new_row)
 
-    # Write back to the CSV file with the new row for today
+    # Write back to the CSV file with the new row
     with open(file_name, 'w', newline='') as file:
         writer = csv.writer(file)
         writer.writerows(rows)
@@ -70,24 +68,21 @@ def check_or_initialize_today(file_name):
     return rows
 
 
-
 # Update a specific activity for today
-def update_activity(file_name, today, activity, value=None):
-    # today = datetime.now().strftime("%d-%m-%Y")
-    rows = check_or_initialize_today(file_name)
+def update_activity(file_name, date, activity, value=None):
+    rows = check_or_initialize_date(file_name, date)
 
-    # Update the activity in today's row
+    # Update the activity in the corresponding row
     with open(file_name, 'w', newline='') as file:
         writer = csv.writer(file)
         for row in rows:
-            if row[0] == today:
+            if row[0] == date:
                 activity_index = list(activities.keys()).index(activity) + 1
                 if value is None:  # Use default value for predefined activities
                     row[activity_index] = activities[activity]
                 else:  # Use the input value for Memorization/Revision
                     row[activity_index] = value
             writer.writerow(row)
-
 
 
 # Display the grouped activities in the structured format
@@ -106,12 +101,14 @@ def display_activity_menu():
     print("23. Memorization     24. Revision")
 
 
-
 # Menu to input progress
-def input_progress(file_name, date=datetime.now().strftime("%d-%m-%Y")):
-    display_activity_menu()
+def input_progress(file_name, date=None):
+    if not date:
+        date = datetime.now().strftime("%d-%m-%Y")
 
+    display_activity_menu()
     choice = get_input("\nEnter the number corresponding to the activity: ")
+
     if not choice.isdigit() or int(choice) not in range(1, len(activities) + 1):
         print("Invalid choice, please try again.")
         return
@@ -125,14 +122,16 @@ def input_progress(file_name, date=datetime.now().strftime("%d-%m-%Y")):
     else:
         update_activity(file_name, date, activity)
 
-    print(f"\n\n<----- Logged \"{activity.replace('_', ' ')}\" ----->")
-
+    print(f"\n\n<----- Logged \"{activity.replace('_', ' ')}\" for {date} ----->")
 
 
 # Display today's progress grouped in a structured format
 def display_progress(file_name, date=False):
     if date:
-        today = get_input("Enter date (dd-mm-yyyy): ")
+        today = get_input("\nEnter date (dd-mm-yyyy): ").strip()
+        if len(today) != 10 or today[2] != '-' or today[5] != '-' or not today[0:2].isdigit() or not today[3:5].isdigit() or not today[6:10].isdigit():
+            print("\nInvalid date format. Please use dd-mm-yyyy.")
+            return
     else:
         today = datetime.now().strftime("%d-%m-%Y")
     try:
@@ -183,7 +182,6 @@ def display_progress(file_name, date=False):
         print("No progress recorded yet.")
 
 
-
 # Main function
 def main():
     script_dir = os.path.abspath(os.path.dirname(__file__))
@@ -197,24 +195,33 @@ def main():
         print("3. Log activity to specific day")
         print("4. View specific day progress")
         print("5. Exit")
-        choice = get_input("Enter your choice: ")
+        choice = get_input("\n --> Enter your choice: ")
 
         if choice == '1':
             input_progress(file_name)
         elif choice == '2':
             display_progress(file_name, False)
         elif choice == '3':
-            date = get_input("Enter date (dd-mm-yyyy) or leave blank for today: ")
+            date = get_input("\nEnter date (dd-mm-yyyy) or leave blank for today: ").strip()
             if not date:
                 date = datetime.now().strftime("%d-%m-%Y")
+            if len(date) != 10 or date[2] != '-' or date[5] != '-':
+                print("\nInvalid date format. Please use dd-mm-yyyy.")
+                continue
+            if not date[0:2].isdigit() or not date[3:5].isdigit() or not date[6:10].isdigit():
+                print("\nInvalid date format. Please use dd-mm-yyyy.")
+                continue
+
             input_progress(file_name, date)
         elif choice == '4':
             display_progress(file_name, True)
         elif choice in ['5', 'x', 'q']:
+            print("\nExiting...\n")
             break
         else:
-            print("Invalid choice, please try again.")
-
+            print("\nInvalid choice, please try again.")
+            continue
+        input("\nPress Enter to continue...")
 
 
 if __name__ == "__main__":
